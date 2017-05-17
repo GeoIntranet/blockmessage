@@ -77,7 +77,7 @@
                 </div>
             @endif
 
-            <div class="content">
+            <div class="content" id="app">
                 <div class="title m-b-md">
                     Laravel
                 </div>
@@ -91,5 +91,7 @@
                 </div>
             </div>
         </div>
+        <script src="//{{Request::gethost()}}:6001/socket.io/socket.io.js"></script>
+        <script src="{{ mix('/js/app.js') }}"></script>
     </body>
 </html>

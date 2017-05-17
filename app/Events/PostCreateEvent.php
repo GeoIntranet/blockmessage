@@ -15,13 +15,19 @@ class PostCreateEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
+     * @var array
+     */
+    public $message;
+
+    /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(array $message)
     {
 
+        $this->message = $message;
     }
 
     /**

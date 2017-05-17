@@ -9,7 +9,7 @@ class Postcontroller extends Controller
 {
     public function index()
     {
-        $event = new PostCreateEvent()    ;
+        $event = new PostCreateEvent(['titre' => 'je suis un test'])    ;
         event ($event);
         dd();
     }

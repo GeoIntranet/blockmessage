@@ -4,9 +4,14 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
-require('./bootstrap');
-
+window.$ = window.jQuery = require('jquery');
+window.Tether = require('tether');
+require('bootstrap');
+import Echo from'laravel-echo'
+let e = new Echo({
+    broadcaster : 'socket.io',
+    host : window.location.hostname+ ':6001'
+});
 window.Vue = require('vue');
 
 /**
