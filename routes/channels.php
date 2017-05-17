@@ -15,7 +15,7 @@
 //    return (int) $user->id === (int) $id;
 //});
 //
-Broadcast::channel('group.1', function ($user, $id) {
+Broadcast::channel('group.1', function ($user,$id) {
     return  true;
 });
 
