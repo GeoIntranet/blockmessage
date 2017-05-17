@@ -14,8 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/logout', 'Auth\LoginController@logout')->name('out');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/chat', 'PostController@tchat')->name('tchat');
 Route::get('/post', 'PostController@index')->name('event');

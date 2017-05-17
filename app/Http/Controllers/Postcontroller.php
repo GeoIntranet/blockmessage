@@ -10,7 +10,13 @@ class Postcontroller extends Controller
     public function index()
     {
         $event = new PostCreateEvent(['titre' => 'je suis un test'])    ;
-        event ($event);
+        broadcast($event)->toOthers();
+        dump ($event);
         dd();
+    }
+
+    public function tchat()
+    {
+        return view('chat');
     }
 }
