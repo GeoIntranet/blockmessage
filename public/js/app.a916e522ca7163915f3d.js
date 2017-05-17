@@ -28056,17 +28056,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 window.$ = window.jQuery = __webpack_require__("./node_modules/jquery/dist/jquery.js");
 window.Tether = __webpack_require__("./node_modules/tether/dist/js/tether.js");
 window.Vue = __webpack_require__("./node_modules/vue/dist/vue.common.js");
-__webpack_require__("./node_modules/bootstrap/dist/js/bootstrap.js");
 window.axios = __webpack_require__("./node_modules/axios/index.js");
+__webpack_require__("./node_modules/bootstrap/dist/js/bootstrap.js");
+
 
 
 var e = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
     broadcaster: 'socket.io',
-    host: window.location.hostname + ':6001'
-});
-
-e.channel('chan-demo').listen('PostCreateEvent', function (e) {
-    //console.log(e)
+    host: 'http://block.message:6001'
 });
 
 /**
@@ -28091,14 +28088,20 @@ var app = new Vue({
             _this.message = 'Nouveau Message';
             console.log(e);
         });
+        e.private('group.1').listen('PostGroupEvent', function (e) {
+            alert('ok');
+        });
     },
 
     methods: {
         clearMessage: function clearMessage() {
             this.message = '';
         },
+        notifyGeneral: function notifyGeneral() {
+            axios.get('/general');
+        },
         notify: function notify() {
-            axios.get('/post');
+            axios.post('/group');
         }
     }
 });

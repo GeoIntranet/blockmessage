@@ -7,19 +7,15 @@
 window.$ = window.jQuery = require('jquery');
 window.Tether = require('tether');
 window.Vue = require('vue');
-require('bootstrap');
 window.axios = require('axios');
+require('bootstrap');
+
 import Echo from'laravel-echo'
 
 let e = new Echo({
     broadcaster : 'socket.io',
-    host : window.location.hostname + ':6001'
+    host : 'http://block.message:6001'
 });
-
-e.channel('chan-demo')
-    .listen('PostCreateEvent',(e)=>{
-        //console.log(e)
-    })
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -42,13 +38,20 @@ e.channel('chan-demo')
                  this.message = 'Nouveau Message';
                  console.log(e);
              })
+         e.private('group.1')
+             .listen('PostGroupEvent', (e) =>{
+                 alert('ok')
+             } )
      },
      methods: {
          clearMessage() {
              this.message='';
          },
+         notifyGeneral() {
+             axios.get('/general')
+         },
          notify() {
-             axios.get('/post');
+             axios.post('/group')
          }
      }
  });

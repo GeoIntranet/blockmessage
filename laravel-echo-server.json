@@ -1,10 +1,10 @@
 {
-	"authHost": "block.message",
+	"authHost": "http://block.message",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [
 		{
-			"appId": "2606067264c84e46",
-			"key": "5c6536c0445b966a8e1708dc2471fab5"
+			"appId": "ee4c28d47991152c",
+			"key": "4924440e28ea70212768e2fd542ad2f4"
 		}
 	],
 	"database": "redis",

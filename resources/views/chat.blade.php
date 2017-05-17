@@ -7,7 +7,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 btn btn-primary" @click="notify">Send</div>
+        <div class="col-5 btn btn-primary" @click="notify">Send</div>
+        <div class="col-1" ></div>
+        <div class="col-5 btn btn-primary" @click="notifyGeneral">SendGeneral</div>
     </div>
     <br>
     <hr>
