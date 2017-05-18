@@ -30,7 +30,9 @@ let e = new Echo({
      el: '#app',
 
      data : {
-         message: ''
+         message: '',
+         title: '',
+         group: '',
      },
      mounted() {
          e.channel('chan-demo')
@@ -38,10 +40,14 @@ let e = new Echo({
                  this.message = 'Nouveau Message';
                  console.log(e);
              })
+         ;
+
          e.private('group.1')
              .listen('PostGroupEvent', (e) =>{
-                 alert('ok')
+                 this.group = e.message.titre;
+                 console.log(e.message.titre)
              } )
+         ;
      },
      methods: {
          clearMessage() {
@@ -51,7 +57,12 @@ let e = new Echo({
              axios.get('/general')
          },
          notify() {
-             axios.post('/group')
+             axios.get('/group')
+         },
+         notifyGroup() {
+             axios.post('/group',{
+                 title:this.title
+             })
          }
      }
  });

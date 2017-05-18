@@ -22,3 +22,4 @@ Route::get('/error', 'PostController@errors')->name('home');
 Route::get('/chat', 'PostController@tchat')->name('tchat');
 Route::get('/general', 'PostController@index')->name('event');
 Route::get('/group', 'PostController@group')->name('event');
+Route::post('/group', 'PostController@postGroup')->name('groupevent');

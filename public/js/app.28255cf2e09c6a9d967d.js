@@ -28079,7 +28079,9 @@ var app = new Vue({
     el: '#app',
 
     data: {
-        message: ''
+        message: '',
+        title: '',
+        group: ''
     },
     mounted: function mounted() {
         var _this = this;
@@ -28088,8 +28090,10 @@ var app = new Vue({
             _this.message = 'Nouveau Message';
             console.log(e);
         });
+
         e.private('group.1').listen('PostGroupEvent', function (e) {
-            alert('ok');
+            _this.group = e.message.titre;
+            console.log(e.message.titre);
         });
     },
 
@@ -28101,7 +28105,12 @@ var app = new Vue({
             axios.get('/general');
         },
         notify: function notify() {
-            axios.post('/group');
+            axios.get('/group');
+        },
+        notifyGroup: function notifyGroup() {
+            axios.post('/group', {
+                title: this.title
+            });
         }
     }
 });

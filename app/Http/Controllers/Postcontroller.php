@@ -40,6 +40,17 @@ class Postcontroller extends Controller
         dd();
     }
 
+    public function postGroup(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required'
+        ]);
+
+        $event = new PostGroupEvent(['titre' => $request->input('title')])    ;
+        broadcast($event)->toOthers();
+        return ['message envoyé'];
+    }
+
     public function errors()
     {
         return view('error');
