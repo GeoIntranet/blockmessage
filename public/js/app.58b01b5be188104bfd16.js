@@ -28080,24 +28080,65 @@ var app = new Vue({
 
     data: {
         message: '',
+        userOnlineCounter: 0,
         title: '',
-        group: ''
+        group: '',
+        users: [],
+        typing: ''
     },
     mounted: function mounted() {
         var _this = this;
 
+        this.listen();
+        e.private('App.User.2').notification(function (notification) {
+            return console.log(notification);
+        });
         e.channel('chan-demo').listen('PostCreateEvent', function (e) {
             _this.message = 'Nouveau Message';
             console.log(e);
         });
 
-        e.private('group.1').listen('PostGroupEvent', function (e) {
+        window.demo = e.join('group.1').here(function (users) {
+            console.log(users);
+            return users;
+        }).joining(function (user) {
+            console.log('joinning ' + user.name);
+        }).leaving(function (user) {
+            console.log('leaving ' + user.name);
+        }).listen('PostGroupEvent', function (e) {
             _this.group = e.message.titre;
             console.log(e.message.titre);
+        }).listenForWhisper('typing', function (e) {
+            console.log('typing', e);
         });
     },
 
+
     methods: {
+        listen: function listen() {
+            var _this2 = this;
+
+            e.join('group.1').here(function (users) {
+                _this2.users = users;
+                _this2.userOnlineCounter = users.length;
+            }).joining(function (user) {
+                _this2.userOnlineCounter = _this2.userOnlineCounter + 1;
+                _this2.users.push(user);
+                console.log('joinning ' + user.name);
+            }).leaving(function (user) {
+                _this2.userOnlineCounter = _this2.userOnlineCounter - 1;
+                var index = _this2.users.map(function (e) {
+                    return e.name;
+                }).indexOf(user.name);
+                _this2.users.splice(index, 1);;
+                console.log('leaving ' + user);
+            });
+        },
+        getOnline: function getOnline() {
+            e.join('group.1').here(function (users) {
+                return users;
+            });
+        },
         clearMessage: function clearMessage() {
             this.message = '';
         },

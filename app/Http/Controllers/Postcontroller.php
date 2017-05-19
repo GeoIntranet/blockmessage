@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\PostCreateEvent;
 use App\Events\PostGroupEvent;
+use App\Notifications\DemoNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +21,7 @@ class Postcontroller extends Controller
 
     public function index()
     {
-        $event = new PostCreateEvent(['titre' => 'je suis un test'])    ;
+        $event = new PostCreateEvent(['titre' => 'lolilol'])    ;
         broadcast($event)->toOthers();
         dump ($event);
         dd();
@@ -36,8 +37,14 @@ class Postcontroller extends Controller
         $user = Auth::user();
         $event = new PostGroupEvent(['titre' => 'je suis un message de groupe'])    ;
         broadcast($event)->toOthers();
-        dump ($event);
-        dd();
+        $user->notify(new DemoNotification());
+
+    }
+
+    public function notifiUser()
+    {
+        $user = Auth::user();
+        $user->notify(new DemoNotification());
     }
 
     public function postGroup(Request $request)
@@ -45,7 +52,8 @@ class Postcontroller extends Controller
         $this->validate($request, [
             'title' => 'required'
         ]);
-
+        $user = Auth::user();
+        $user->notify(new DemoNotification());
         $event = new PostGroupEvent(['titre' => $request->input('title')])    ;
         broadcast($event)->toOthers();
         return ['message envoyé'];

@@ -16,6 +16,8 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('group.{id}', function ($user,$id) {
-    return (int) $user->groupe_id === (int) $id;
+    if((int) $user->groupe_id === (int) $id){
+        return ['id' => $user->id, 'name' => $user->name];
+    }
 });
 

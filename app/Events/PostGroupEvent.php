@@ -36,6 +36,6 @@ class PostGroupEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('group.1');
+        return new PresenceChannel('group.1');
     }
 }

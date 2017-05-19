@@ -31,10 +31,19 @@ let e = new Echo({
 
      data : {
          message: '',
+         userOnlineCounter: 0,
          title: '',
          group: '',
+         users :[],
+         typing :'',
      },
      mounted() {
+
+         this.listen();
+         e.private('App.User.2')
+             .notification( notification =>
+                 console.log(notification)
+             )
          e.channel('chan-demo')
              .listen('PostCreateEvent',(e)=>{
                  this.message = 'Nouveau Message';
@@ -42,14 +51,55 @@ let e = new Echo({
              })
          ;
 
-         e.private('group.1')
+        window.demo =  e.join('group.1')
+             .here(function(users){
+                 console.log(users);
+                 return users
+             })
+             .joining(function(user) {
+                 console.log('joinning '+ user.name)
+             })
+             .leaving(function(user) {
+                 console.log('leaving '+ user.name)
+             })
              .listen('PostGroupEvent', (e) =>{
                  this.group = e.message.titre;
                  console.log(e.message.titre)
-             } )
-         ;
+             })
+
+            .listenForWhisper('typing', e => {
+                console.log('typing', e)
+            })
+        ;
      },
+
      methods: {
+         listen(){
+             e.join('group.1')
+                 .here(users => {
+                     this.users = users;
+                     this.userOnlineCounter = users.length;
+                 })
+                 .joining( user => {
+                     this.userOnlineCounter = this.userOnlineCounter+1;
+                     this.users.push(user);
+                     console.log('joinning '+ user.name);
+                 })
+                 .leaving( user => {
+                     this.userOnlineCounter = this.userOnlineCounter - 1;
+                     var index = this.users.map(e => {return e.name}).indexOf(user.name);
+                     this.users.splice(index,1);;
+                     console.log('leaving '+ user);
+                 })
+             ;
+         },
+
+         getOnline(){
+             e.join('group.1')
+                 .here(function(users){
+                     return users
+                 })
+         },
          clearMessage() {
              this.message='';
          },
