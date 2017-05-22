@@ -36,6 +36,7 @@ let e = new Echo({
          group: '',
          users :[],
          typing :'',
+         demo :'',
      },
      mounted() {
 

@@ -9,8 +9,10 @@
 
                 </div>
             </div>
-            <div class="row" >
+            <hr>
+            <div class="row border" v-for="user in users" >
                 <div class="col">
+                    @{{ user.name }}
                 </div>
             </div>
         </div>
@@ -24,7 +26,7 @@
                 <div class="col">
                     <form  @submit.prevent="notifyGroup">
                         {{ csrf_field() }}
-                        <input type="text" name="title" v-model="title" @keyUp="typing">
+                        <input type="text" name="title" v-model="title" v-on:click="demo.whisper('typing','test')">
                         <input class="btn-primary btn" type="submit" value="send">
                     </form>
                 </div>
