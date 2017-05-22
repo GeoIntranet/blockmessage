@@ -28084,54 +28084,71 @@ var app = new Vue({
         title: '',
         group: '',
         users: [],
-        typing: ''
+        typing: false,
+        demo: ''
     },
     mounted: function mounted() {
-        var _this = this;
 
         this.listen();
-        e.private('App.User.2').notification(function (notification) {
-            return console.log(notification);
-        });
-        e.channel('chan-demo').listen('PostCreateEvent', function (e) {
-            _this.message = 'Nouveau Message';
-            console.log(e);
-        });
+        // e.private('App.User.2')
+        //     .notification( notification =>
+        //         console.log(notification)
+        //     )
+        // e.channel('chan-demo')
+        //     .listen('PostCreateEvent',(e)=>{
+        //         this.message = 'Nouveau Message';
+        //         console.log(e);
+        //     })
+        // ;
 
-        window.demo = e.join('group.1').here(function (users) {
-            console.log(users);
-            return users;
-        }).joining(function (user) {
-            console.log('joinning ' + user.name);
-        }).leaving(function (user) {
-            console.log('leaving ' + user.name);
-        }).listen('PostGroupEvent', function (e) {
-            _this.group = e.message.titre;
-            console.log(e.message.titre);
-        }).listenForWhisper('typing', function (e) {
-            console.log('typing', e);
-        });
+        // e.join('group.1')
+        //    .here(function(users){
+        //        console.log(users);
+        //        return users
+        //    })
+        //    .joining(function(user) {
+        //        console.log('joinning '+ user.name)
+        //    })
+        //    .leaving(function(user) {
+        //        console.log('leaving '+ user.name)
+        //    })
+        //    .listen('PostGroupEvent', (e) =>{
+        //        this.group = e.message.titre;
+        //        console.log(e.message.titre)
+        //    })
+        //
+        //   .listenForWhisper('typing', e => {
+        //       console.log('typing', e)
+        //   })
+        ;
     },
 
 
     methods: {
         listen: function listen() {
-            var _this2 = this;
+            var _this = this;
 
             e.join('group.1').here(function (users) {
-                _this2.users = users;
-                _this2.userOnlineCounter = users.length;
+                _this.users = users;
+                _this.userOnlineCounter = users.length;
             }).joining(function (user) {
-                _this2.userOnlineCounter = _this2.userOnlineCounter + 1;
-                _this2.users.push(user);
+                _this.userOnlineCounter = _this.userOnlineCounter + 1;
+                _this.users.push(user);
                 console.log('joinning ' + user.name);
             }).leaving(function (user) {
-                _this2.userOnlineCounter = _this2.userOnlineCounter - 1;
-                var index = _this2.users.map(function (e) {
+                _this.userOnlineCounter = _this.userOnlineCounter - 1;
+                var index = _this.users.map(function (e) {
                     return e.name;
                 }).indexOf(user.name);
-                _this2.users.splice(index, 1);;
+                _this.users.splice(index, 1);;
                 console.log('leaving ' + user);
+            }).listen('PostGroupEvent', function (e) {
+                _this.group = e.message.titre;
+                console.log(e.message.titre);
+            }).listenForWhisper('typing', function (e) {
+                console.log(e.typing);
+                _this.typing = e.typing;
+                setTimeout(_this.typing = false, 500);
             });
         },
         getOnline: function getOnline() {
@@ -28152,6 +28169,16 @@ var app = new Vue({
             axios.post('/group', {
                 title: this.title
             });
+        },
+        isTyping: function isTyping() {
+            var channel = e.join('group.1');
+
+            setTimeout(function () {
+                console.log('istyping');
+                channel.whisper('typing', {
+                    typing: true
+                });
+            }, 300);
         }
     }
 });

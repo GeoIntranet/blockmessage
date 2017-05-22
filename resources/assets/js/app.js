@@ -10,6 +10,11 @@ window.Vue = require('vue');
 window.axios = require('axios');
 require('bootstrap');
 
+window.Laravel = {
+    csrfToken: $('meta[name=csrf-token]').attr("content") ,
+    user: $('meta[name=user]').attr("content")
+};
+
 import Echo from'laravel-echo'
 
 let e = new Echo({
@@ -35,46 +40,64 @@ let e = new Echo({
          title: '',
          group: '',
          users :[],
-         typing :'',
+         typing :false,
          demo :'',
+         laravel : window.laravel,
      },
      mounted() {
+         console.log(window.laravel);
+          this.listen();
+         // e.private('App.User.2')
+         //     .notification( notification =>
+         //         console.log(notification)
+         //     )
+         // e.channel('chan-demo')
+         //     .listen('PostCreateEvent',(e)=>{
+         //         this.message = 'Nouveau Message';
+         //         console.log(e);
+         //     })
+         // ;
 
-         this.listen();
-         e.private('App.User.2')
-             .notification( notification =>
-                 console.log(notification)
-             )
-         e.channel('chan-demo')
-             .listen('PostCreateEvent',(e)=>{
-                 this.message = 'Nouveau Message';
-                 console.log(e);
-             })
-         ;
-
-        window.demo =  e.join('group.1')
-             .here(function(users){
-                 console.log(users);
-                 return users
-             })
-             .joining(function(user) {
-                 console.log('joinning '+ user.name)
-             })
-             .leaving(function(user) {
-                 console.log('leaving '+ user.name)
-             })
-             .listen('PostGroupEvent', (e) =>{
-                 this.group = e.message.titre;
-                 console.log(e.message.titre)
-             })
-
-            .listenForWhisper('typing', e => {
-                console.log('typing', e)
-            })
+          // e.join('group.1')
+          //    .here(function(users){
+          //        console.log(users);
+          //        return users
+          //    })
+          //    .joining(function(user) {
+          //        console.log('joinning '+ user.name)
+          //    })
+          //    .leaving(function(user) {
+          //        console.log('leaving '+ user.name)
+          //    })
+          //    .listen('PostGroupEvent', (e) =>{
+          //        this.group = e.message.titre;
+          //        console.log(e.message.titre)
+          //    })
+          //
+          //   .listenForWhisper('typing', e => {
+          //       console.log('typing', e)
+          //   })
         ;
      },
 
      methods: {
+         isTyping() {
+             let channel = e.join('group.1')
+             setTimeout(function() {
+                 channel.whisper('typing', {
+                     typing : true
+                 });
+             }, 300);
+         },
+         isNotTyping() {
+             let channel = e.join('group.1')
+             setTimeout(function() {
+                 console.log('isNotTyping');
+                 channel.whisper('typing', {
+                     typing : false
+                 });
+             }, 6000);
+         },
          listen(){
              e.join('group.1')
                  .here(users => {
@@ -91,6 +114,17 @@ let e = new Echo({
                      var index = this.users.map(e => {return e.name}).indexOf(user.name);
                      this.users.splice(index,1);;
                      console.log('leaving '+ user);
+                 })
+                 .listen('PostGroupEvent', (e) =>{
+                    this.group = e.message.titre;
+                    console.log(e.message.titre)
+                 })
+                 .listenForWhisper('typing', e => {
+                     console.log(e.typing);
+                     this.typing = e.typing;
+                     setTimeout(function() {
+                         this.typing = false
+                     }, 900);
                  })
              ;
          },
@@ -114,6 +148,7 @@ let e = new Echo({
              axios.post('/group',{
                  title:this.title
              })
-         }
+         },
+
      }
  });

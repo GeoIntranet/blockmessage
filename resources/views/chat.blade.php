@@ -26,13 +26,16 @@
                 <div class="col">
                     <form  @submit.prevent="notifyGroup">
                         {{ csrf_field() }}
-                        <input type="text" name="title" v-model="title" v-on:click="demo.whisper('typing','test')">
+                        <input type="text" name="title" v-model="title" @keyUp="isNotTyping"  @keyDown="isTyping">
                         <input class="btn-primary btn" type="submit" value="send">
                     </form>
                 </div>
                 <div class="col-1" ></div>
                 <div class="col-5 btn btn-primary" @click="notifyGeneral">SendGeneral</div>
             </div>
+            <span v-show="typing" class="help-block" style="font-style: italic;">
+                            vvvvv is typing...
+                        </span>
             <br>
             <hr>
             <div class="row">
