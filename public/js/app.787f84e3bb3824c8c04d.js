@@ -28108,7 +28108,7 @@ var app = new Vue({
         isNotTyping: function isNotTyping() {
             var channel = e.join('group.1');
             setTimeout(function () {
-                console.log('isNotTyping');
+                //console.log('isNotTyping');
                 channel.whisper('typing', {
                     typing: false
                 });

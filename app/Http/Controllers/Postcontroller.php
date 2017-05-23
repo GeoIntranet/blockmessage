@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\PostCreateEvent;
 use App\Events\PostGroupEvent;
+use App\Messages;
 use App\Notifications\DemoNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +54,11 @@ class Postcontroller extends Controller
             'message' => 'required'
         ]);
         $user = Auth::user();
-        $user->notify(new DemoNotification());
+        //$user->notify(new DemoNotification());
+        Messages::forceCreate([
+            'message' => $request->input('message'),
+            'id_user' => $user->id,
+        ]);
         $event = new PostGroupEvent(['message' => $request->input('message')])    ;
         broadcast($event)->toOthers();
         return ['message envoyé'];

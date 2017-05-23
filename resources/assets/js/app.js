@@ -58,7 +58,7 @@ let e = new Echo({
          isNotTyping() {
              let channel = e.join('group.1')
              setTimeout(function() {
-                 console.log('isNotTyping');
+                 //console.log('isNotTyping');
                  channel.whisper('typing', {
                      typing : false
                  });
@@ -66,6 +66,7 @@ let e = new Echo({
          },
          listen(){
              e.join('group.1')
+
                  .here(users => {
                      this.users = users;
                      this.userOnlineCounter = users.length;
