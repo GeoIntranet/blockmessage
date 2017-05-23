@@ -18,6 +18,7 @@ Route::get('/logout', 'Auth\LoginController@logout')->name('out');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/api/message/{id}', 'PostController@getMsg')->name('getMsg');
 Route::get('/error', 'PostController@errors')->name('home');
 Route::get('/chat', 'PostController@tchat')->name('tchat');
 Route::get('/general', 'PostController@index')->name('event');

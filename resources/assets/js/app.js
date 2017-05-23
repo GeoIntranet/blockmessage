@@ -42,11 +42,19 @@ let e = new Echo({
          typing :false,
      },
      mounted() {
+          this.init();
           this.listen();
         ;
      },
 
      methods: {
+         init(){
+              let id=1;
+             axios.get('/api/message/'+id)
+                 .then(function (response) {
+                     this.messages = response;
+                 })
+         },
          isTyping() {
              let channel = e.join('group.1')
              setTimeout(function() {

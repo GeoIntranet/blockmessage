@@ -30,7 +30,11 @@
                             Joanna Rocher
                         </div>
                         <div class="card-block">
-
+                            <div class="row" >
+                                <div class="col">
+                                    @{{ messages }}
+                                </div>
+                            </div>
                             <div class="row" v-for="message in messages">
                                 <div class="col">
                                     @{{ message.message }}

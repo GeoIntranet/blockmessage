@@ -28091,12 +28091,19 @@ var app = new Vue({
         typing: false
     },
     mounted: function mounted() {
+        this.init();
         this.listen();
         ;
     },
 
 
     methods: {
+        init: function init() {
+            var id = 1;
+            axios.get('/api/message/' + id).then(function (response) {
+                this.messages = response;
+            });
+        },
         isTyping: function isTyping() {
             var channel = e.join('group.1');
             setTimeout(function () {

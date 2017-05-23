@@ -64,6 +64,11 @@ class Postcontroller extends Controller
         return ['message envoyé'];
     }
 
+    public function getMsg($id)
+    {
+        return Messages::where('autor',$id)->get()->tojson();
+    }
+
     public function errors()
     {
         return view('error');
