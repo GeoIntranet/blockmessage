@@ -50,11 +50,11 @@ class Postcontroller extends Controller
     public function postGroup(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required'
+            'message' => 'required'
         ]);
         $user = Auth::user();
         $user->notify(new DemoNotification());
-        $event = new PostGroupEvent(['titre' => $request->input('title')])    ;
+        $event = new PostGroupEvent(['message' => $request->input('message')])    ;
         broadcast($event)->toOthers();
         return ['message envoyé'];
     }

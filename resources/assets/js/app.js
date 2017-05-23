@@ -36,47 +36,13 @@ let e = new Echo({
 
      data : {
          message: '',
+         messages: [],
          userOnlineCounter: 0,
-         title: '',
-         group: '',
          users :[],
          typing :false,
-         demo :'',
-         laravel : window.laravel,
      },
      mounted() {
-         console.log(window.laravel);
           this.listen();
-         // e.private('App.User.2')
-         //     .notification( notification =>
-         //         console.log(notification)
-         //     )
-         // e.channel('chan-demo')
-         //     .listen('PostCreateEvent',(e)=>{
-         //         this.message = 'Nouveau Message';
-         //         console.log(e);
-         //     })
-         // ;
-
-          // e.join('group.1')
-          //    .here(function(users){
-          //        console.log(users);
-          //        return users
-          //    })
-          //    .joining(function(user) {
-          //        console.log('joinning '+ user.name)
-          //    })
-          //    .leaving(function(user) {
-          //        console.log('leaving '+ user.name)
-          //    })
-          //    .listen('PostGroupEvent', (e) =>{
-          //        this.group = e.message.titre;
-          //        console.log(e.message.titre)
-          //    })
-          //
-          //   .listenForWhisper('typing', e => {
-          //       console.log('typing', e)
-          //   })
         ;
      },
 
@@ -96,7 +62,7 @@ let e = new Echo({
                  channel.whisper('typing', {
                      typing : false
                  });
-             }, 6000);
+             }, 4500);
          },
          listen(){
              e.join('group.1')
@@ -107,20 +73,19 @@ let e = new Echo({
                  .joining( user => {
                      this.userOnlineCounter = this.userOnlineCounter+1;
                      this.users.push(user);
-                     console.log('joinning '+ user.name);
+                     //console.log('joinning '+ user.name);
                  })
                  .leaving( user => {
                      this.userOnlineCounter = this.userOnlineCounter - 1;
                      var index = this.users.map(e => {return e.name}).indexOf(user.name);
                      this.users.splice(index,1);;
-                     console.log('leaving '+ user);
+                     //console.log('leaving '+ user);
                  })
                  .listen('PostGroupEvent', (e) =>{
-                    this.group = e.message.titre;
-                    console.log(e.message.titre)
+                    this.messages.push(e.message) ;
+                    //console.log(e.message)
                  })
                  .listenForWhisper('typing', e => {
-                     console.log(e.typing);
                      this.typing = e.typing;
                      setTimeout(function() {
                          this.typing = false
@@ -144,10 +109,13 @@ let e = new Echo({
          notify() {
              axios.get('/group')
          },
-         notifyGroup() {
+         sendMessage() {
              axios.post('/group',{
-                 title:this.title
+                 message:this.message
              })
+
+             this.message ='';
+             this.isNotTyping();
          },
 
      }

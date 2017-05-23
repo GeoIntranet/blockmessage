@@ -28085,47 +28085,13 @@ var app = new Vue({
 
     data: {
         message: '',
+        messages: [],
         userOnlineCounter: 0,
-        title: '',
-        group: '',
         users: [],
-        typing: false,
-        demo: '',
-        laravel: window.laravel
+        typing: false
     },
     mounted: function mounted() {
-        console.log(window.laravel);
         this.listen();
-        // e.private('App.User.2')
-        //     .notification( notification =>
-        //         console.log(notification)
-        //     )
-        // e.channel('chan-demo')
-        //     .listen('PostCreateEvent',(e)=>{
-        //         this.message = 'Nouveau Message';
-        //         console.log(e);
-        //     })
-        // ;
-
-        // e.join('group.1')
-        //    .here(function(users){
-        //        console.log(users);
-        //        return users
-        //    })
-        //    .joining(function(user) {
-        //        console.log('joinning '+ user.name)
-        //    })
-        //    .leaving(function(user) {
-        //        console.log('leaving '+ user.name)
-        //    })
-        //    .listen('PostGroupEvent', (e) =>{
-        //        this.group = e.message.titre;
-        //        console.log(e.message.titre)
-        //    })
-        //
-        //   .listenForWhisper('typing', e => {
-        //       console.log('typing', e)
-        //   })
         ;
     },
 
@@ -28146,7 +28112,7 @@ var app = new Vue({
                 channel.whisper('typing', {
                     typing: false
                 });
-            }, 6000);
+            }, 4500);
         },
         listen: function listen() {
             var _this = this;
@@ -28157,19 +28123,18 @@ var app = new Vue({
             }).joining(function (user) {
                 _this.userOnlineCounter = _this.userOnlineCounter + 1;
                 _this.users.push(user);
-                console.log('joinning ' + user.name);
+                //console.log('joinning '+ user.name);
             }).leaving(function (user) {
                 _this.userOnlineCounter = _this.userOnlineCounter - 1;
                 var index = _this.users.map(function (e) {
                     return e.name;
                 }).indexOf(user.name);
                 _this.users.splice(index, 1);;
-                console.log('leaving ' + user);
+                //console.log('leaving '+ user);
             }).listen('PostGroupEvent', function (e) {
-                _this.group = e.message.titre;
-                console.log(e.message.titre);
+                _this.messages.push(e.message);
+                //console.log(e.message)
             }).listenForWhisper('typing', function (e) {
-                console.log(e.typing);
                 _this.typing = e.typing;
                 setTimeout(function () {
                     this.typing = false;
@@ -28190,10 +28155,13 @@ var app = new Vue({
         notify: function notify() {
             axios.get('/group');
         },
-        notifyGroup: function notifyGroup() {
+        sendMessage: function sendMessage() {
             axios.post('/group', {
-                title: this.title
+                message: this.message
             });
+
+            this.message = '';
+            this.isNotTyping();
         }
     }
 });

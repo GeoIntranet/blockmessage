@@ -14,7 +14,7 @@
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="container" id="app">
+    <div class="container-fluid" id="app">
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -72,7 +72,6 @@
         </nav>
 
         @yield('content')
-        <h1>@php print_r(Request::gethost().':6001/socket.io/socket.io.js') @endphp</h1>
     </div>
 
     <!-- Scripts -->
