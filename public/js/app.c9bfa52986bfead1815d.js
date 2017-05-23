@@ -28085,6 +28085,7 @@ var app = new Vue({
 
     data: {
         message: '',
+        disabled: true,
         messages: [],
         userOnlineCounter: 0,
         users: [],
@@ -28098,11 +28099,12 @@ var app = new Vue({
 
 
     methods: {
+        isDisable: function isDisable() {
+            if (this.message !== '') this.disabled = false;
+        },
         init: function init() {
             var id = 1;
-            axios.get('/api/message/' + id).then(function (response) {
-                this.messages = response;
-            });
+            axios.get('/api/message/' + id).then(function (response) {});
         },
         isTyping: function isTyping() {
             var channel = e.join('group.1');

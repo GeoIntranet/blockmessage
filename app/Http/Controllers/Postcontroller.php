@@ -58,6 +58,7 @@ class Postcontroller extends Controller
         Messages::forceCreate([
             'message' => $request->input('message'),
             'id_user' => $user->id,
+            'author' => $user->id,
         ]);
         $event = new PostGroupEvent(['message' => $request->input('message')])    ;
         broadcast($event)->toOthers();
@@ -66,7 +67,7 @@ class Postcontroller extends Controller
 
     public function getMsg($id)
     {
-        return Messages::where('autor',$id)->get()->tojson();
+        return Messages::where('author',$id)->get();
     }
 
     public function errors()

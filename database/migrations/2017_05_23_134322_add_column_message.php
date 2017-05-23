@@ -14,7 +14,7 @@ class AddColumnMessage extends Migration
     public function up()
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->integer('autor');
+            $table->integer('author');
         });
     }
 

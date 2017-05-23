@@ -36,6 +36,7 @@ let e = new Echo({
 
      data : {
          message: '',
+         disabled: true,
          messages: [],
          userOnlineCounter: 0,
          users :[],
@@ -48,11 +49,14 @@ let e = new Echo({
      },
 
      methods: {
+         isDisable(){
+             if(  this.message !== '') this.disabled = false;
+         },
          init(){
               let id=1;
              axios.get('/api/message/'+id)
                  .then(function (response) {
-                     this.messages = response;
+
                  })
          },
          isTyping() {
