@@ -38,7 +38,6 @@ let e = new Echo({
 
      data : {
          message: '',
-         disabled: true,
          messages: [],
          userOnlineCounter: 0,
          users :[],

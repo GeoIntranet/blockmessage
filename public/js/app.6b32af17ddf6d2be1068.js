@@ -44035,7 +44035,6 @@ var app = new Vue({
 
     data: {
         message: '',
-        disabled: true,
         messages: [],
         userOnlineCounter: 0,
         users: [],

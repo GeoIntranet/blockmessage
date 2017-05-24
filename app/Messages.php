@@ -16,5 +16,9 @@ class Messages extends Model
         return  (new Carbon($this->attributes['created_at']))->format('d M H:i');
     }
 
+    public function getCreatedAtYearAttribute($value)
+    {
+        return  (new Carbon($this->attributes['created_at']))->format('Y-m-d');
+    }
 
 }
