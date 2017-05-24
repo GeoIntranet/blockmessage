@@ -78,7 +78,7 @@ class Postcontroller extends Controller
         $messages = Messages::where('author',1)->get();
         foreach ($messages as $index => $message) {
             dump($message->created_at);
-            dump($message->created_at_year);
+            dump($message->date);
             dump($message->getOriginal('created_at'));
             dump($message->updated_at);
             dump($message);
