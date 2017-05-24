@@ -55,12 +55,15 @@ class Postcontroller extends Controller
         ]);
         $user = Auth::user();
         //$user->notify(new DemoNotification());
-        Messages::forceCreate([
+        $message = Messages::forceCreate([
             'message' => $request->input('message'),
             'id_user' => $user->id,
             'author' => $user->id,
         ]);
-        $event = new PostGroupEvent(['message' => $request->input('message')])    ;
+        $event = new PostGroupEvent([
+            'message' => $request->input('message'),
+            'created_at' =>$message->created_at
+        ])    ;
         broadcast($event)->toOthers();
         return ['message envoyé'];
     }
@@ -68,6 +71,20 @@ class Postcontroller extends Controller
     public function getMsg($id)
     {
         return Messages::where('author',$id)->get();
+    }
+
+    public function muta()
+    {
+        $messages = Messages::where('author',1)->get();
+        foreach ($messages as $index => $message) {
+            dump($message->created_at);
+            dump($message->getOriginal('created_at'));
+            dump($message->updated_at);
+            dump($message);
+        }
+
+        dump($messages);
+        die();
     }
 
     public function errors()

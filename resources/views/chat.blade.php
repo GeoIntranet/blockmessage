@@ -36,16 +36,15 @@
                                 </div>
                             </div>
                             <div class="row" v-for="message in messages">
-                                <div class="col">
-                                    @{{ message.message }}
-                                </div>
+                                <div class="col"> @{{ message.created_at }} </div>
+                                <div class="col"> @{{ message.message }} </div>
                             </div>
                         </div>
                         <div class="card-footer">
                             <form class="form-inline right"  @submit.prevent="sendMessage">
                                 {{ csrf_field() }}
                                 <input class=" col form-control mb-2 mr-sm-2 mb-sm-0" type="text" name="msg" v-model="message" @keyUp="isNotTyping"  @keyDown="isTyping">
-                                <input class="btn-primary btn " type="submit" value="send" :disabled="message">
+                                <input class="btn-primary btn " type="submit" value="send" :disabled="isDisable()">
                             </form>
                             <span v-show="typing" class="help-block" style="font-style: italic;">
                                 Joanna is typing...

@@ -8,6 +8,8 @@ window.$ = window.jQuery = require('jquery');
 window.Tether = require('tether');
 window.Vue = require('vue');
 window.axios = require('axios');
+window.moment = require('moment');
+
 require('bootstrap');
 
 window.Laravel = {
@@ -41,6 +43,7 @@ let e = new Echo({
          userOnlineCounter: 0,
          users :[],
          typing :false,
+         user : JSON.parse(window.Laravel.user)
      },
      mounted() {
           this.init();
@@ -50,13 +53,13 @@ let e = new Echo({
 
      methods: {
          isDisable(){
-             if(  this.message !== '') this.disabled = false;
+             return (! this.message.length > 0);
          },
          init(){
               let id=1;
              axios.get('/api/message/'+id)
-                 .then(function (response) {
-
+                 .then(response => {
+                    this.messages = response.data;
                  })
          },
          isTyping() {
@@ -124,9 +127,13 @@ let e = new Echo({
          },
          sendMessage() {
              axios.post('/group',{
-                 message:this.message
+                 message:this.message,
              })
+            this.messages.push({
+                message:this.message,
+                created_at:  moment().format("DD MMM HH:mm"),
 
+            });
              this.message ='';
              this.isNotTyping();
          },

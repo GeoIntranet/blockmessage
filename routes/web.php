@@ -20,7 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/api/message/{id}', 'PostController@getMsg')->name('getMsg');
 Route::get('/error', 'PostController@errors')->name('home');
-Route::get('/chat', 'PostController@tchat')->name('tchat');
+Route::get('/tchat', 'PostController@tchat')->name('tchat');
 Route::get('/general', 'PostController@index')->name('event');
 Route::get('/group', 'PostController@group')->name('event');
 Route::post('/group', 'PostController@postGroup')->name('groupevent');
+
+
+Route::get('/chat/{user}', 'ChatController@chat')->name('chat');
+
+Route::get('/proto/muta', 'PostController@muta')->name('muta');
